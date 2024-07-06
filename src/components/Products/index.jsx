@@ -1,7 +1,7 @@
-import React from "react";
-import { useDispatch } from "react-redux";
-import { addItem } from "../../features/cart/cartSlice";
+import { useDispatch } from "react-redux"; // Import useDispatch hook to send actions to the store
+import { addItem } from "../../features/cart/cartSlice"; // Import the addItem action from the cart slice
 
+// Define a list of fake products
 const products = [
     { id: "1", name: "Product 1", price: 10 },
     { id: "2", name: "Product 2", price: 15 },
@@ -9,10 +9,11 @@ const products = [
 ];
 
 const Products = () => {
-    const dispatch = useDispatch();
+    const dispatch = useDispatch(); // Get the dispatch function to send actions
 
+    // Handler function to add a product to the cart from the list of products
     const handleAddProductToCart = (product) => {
-        dispatch(addItem({ ...product, quantity: 1 }));
+        dispatch(addItem({ ...product, quantity: 1 })); // Add the product to the cart with a quantity of 1
     };
 
     return (

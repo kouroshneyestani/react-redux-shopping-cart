@@ -1,22 +1,23 @@
-import React from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux"; // Import useSelector to read state and useDispatch to send actions
 import {
     removeItem,
     updateQuantity,
     selectTotalPrice,
-} from "../../features/cart/cartSlice";
+} from "../../features/cart/cartSlice"; // Import actions for cart state
 
 const Cart = () => {
-    const dispatch = useDispatch();
-    const cartItems = useSelector((state) => state.cart.items);
-    const totalPrice = useSelector(selectTotalPrice);
+    const dispatch = useDispatch(); // Get the dispatch function to send actions
+    const cartItems = useSelector((state) => state.cart.items); // Get the cart items from the Redux store
+    const totalPrice = useSelector(selectTotalPrice); // Get the total price from the cart selector
 
+    // Handler function to remove an item from the cart
     const handleRemove = (id) => {
-        dispatch(removeItem({ id }));
+        dispatch(removeItem({ id })); // Remove the item from the cart
     };
 
+    // Handler function to update the quantity of an item in the cart
     const handleQuantityChange = (id, quantity) => {
-        dispatch(updateQuantity({ id, quantity }));
+        dispatch(updateQuantity({ id, quantity })); // Update the item's quantity
     };
 
     return (
@@ -47,6 +48,7 @@ const Cart = () => {
                     </li>
                 ))}
             </ul>
+            {/* Display the total price */}
             <h3>Total Price: ${totalPrice.toFixed(2)}</h3>
         </div>
     );
