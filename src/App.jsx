@@ -1,34 +1,20 @@
-import { useState } from "react";
-
+// src/App.jsx
+import React from "react";
+import { ShoppingCartProvider } from "./contexts/ShoppingCartContext"; // Import ShoppingCartProvider
 import Products from "./components/Products";
 import ShoppingCart from "./components/Cart";
+import CartToggleButton from "./components/CartToggleButton"; // Import CartToggleButton component
 
 function App() {
-    const [isShoppingCartVisible, setIsShoppingCartVisible] = useState(false);
-
-    // Function to toggle the cart visibility
-    const toggleShoppingCart = () => {
-        setIsShoppingCartVisible(!isShoppingCartVisible);
-    };
-
     return (
-        <>
-            <div className="app">
-                <div>
-                    <h1>
-                        React Redux Shopping Cart
-                        <button onClick={toggleShoppingCart}>
-                            Toogle cart
-                        </button>
-                    </h1>
-                    <Products />
-                    <ShoppingCart
-                        isVisible={isShoppingCartVisible}
-                        toggleCart={toggleShoppingCart}
-                    />
-                </div>
+        <ShoppingCartProvider>
+            <div>
+                <h1>React Redux Shopping Cart</h1>
+                <CartToggleButton>[ CART ]</CartToggleButton>
+                <Products />
+                <ShoppingCart />
             </div>
-        </>
+        </ShoppingCartProvider>
     );
 }
 

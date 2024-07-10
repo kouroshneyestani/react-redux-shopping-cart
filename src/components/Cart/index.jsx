@@ -1,4 +1,5 @@
-import { useState } from "react";
+// src/components/Cart.jsx
+import { useShoppingCart } from "../../contexts/ShoppingCartContext";
 import { useSelector, useDispatch } from "react-redux"; // Import useSelector to read state and useDispatch to send actions
 import {
     removeItem,
@@ -6,7 +7,8 @@ import {
     selectTotalPrice,
 } from "../../features/cart/cartSlice"; // Import actions for cart state
 
-const Cart = ({ isVisible, toggleCart }) => {
+const Cart = () => {
+    const { isVisible, toggleCart } = useShoppingCart();
     const dispatch = useDispatch(); // Get the dispatch function to send actions
     const cartItems = useSelector((state) => state.cart.items); // Get the cart items from the Redux store
     const totalPrice = useSelector(selectTotalPrice); // Get the total price from the cart selector
