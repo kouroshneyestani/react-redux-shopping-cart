@@ -1,14 +1,8 @@
-import React, { useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import React from "react";
+import { useSelector } from "react-redux";
 import { useCart, useCartActions, useProductSearch } from "../../hooks/index";
 import { withCartTotal } from "../../hocs/";
-import {
-    removeItem,
-    updateQuantity,
-    selectTotalPrice,
-} from "../../features/cart/cartSlice";
 import { formatPrice } from "../../utils/formatPrice";
-import { fetchCartDetails } from "../../services/cartService";
 
 /**
  * Cart component displaying items in the shopping cart.
@@ -18,12 +12,16 @@ import { fetchCartDetails } from "../../services/cartService";
  */
 const Cart = ({ totalPrice }) => {
     const { isVisible, toggleCart } = useCart(); // Use the custom cart hook for visibility
-    const dispatch = useDispatch();
-    const cartItems = useSelector((state) => state.cart.items); // Get cart items from Redux store
     const { searchTerm, updateSearchTerm } = useProductSearch(); // Hook for product search
+    const cartItems = useSelector((state) => state.cart?.items); // Get cart items from Redux store
 
     // Actions from custom hook
     const { removeFromCart, updateCartItem } = useCartActions();
+
+    // Handler to search products
+    const handleSearch = (event) => {
+        updateSearchTerm(event.target.value);
+    };
 
     // Handler to remove an item
     const handleRemove = (id) => {
@@ -34,18 +32,6 @@ const Cart = ({ totalPrice }) => {
     const handleQuantityChange = (id, quantity) => {
         updateCartItem(id, quantity);
     };
-
-    // Handler to search products
-    const handleSearch = (event) => {
-        updateSearchTerm(event.target.value);
-    };
-
-    useEffect(() => {
-        // Fetch cart details
-        fetchCartDetails().then((data) => {
-            console.log("Cart details:", data);
-        });
-    }, []);
 
     return (
         <div
@@ -85,13 +71,15 @@ const Cart = ({ totalPrice }) => {
                     </button>
                 </header>
                 <article className="py-6 px-6 overflow-x-auto">
-                    <input
-                        type="text"
-                        value={searchTerm}
-                        onChange={handleSearch}
-                        placeholder="Search products"
-                        className="mb-4 p-2 border border-gray-300 rounded"
-                    />
+                    {cartItems.length > 0 && (
+                        <input
+                            type="text"
+                            value={searchTerm}
+                            onChange={handleSearch}
+                            placeholder="Search products"
+                            className="w-full mb-4 p-2 border border-gray-300"
+                        />
+                    )}
                     <ul className="flex flex-col gap-4">
                         {cartItems.length > 0 ? (
                             cartItems
@@ -129,6 +117,31 @@ const Cart = ({ totalPrice }) => {
                                                                 </span>
                                                             </li>
                                                         </ul>
+                                                        <button
+                                                            className="top-2 right-0 w-4 h-4 flex items-center justify-center absolute cursor-pointer"
+                                                            onClick={() =>
+                                                                handleRemove(
+                                                                    item.id
+                                                                )
+                                                            }
+                                                        >
+                                                            <svg
+                                                                width="8"
+                                                                height="8"
+                                                                viewBox="0 0 16 16"
+                                                                fill="none"
+                                                                xmlns="http://www.w3.org/2000/svg"
+                                                            >
+                                                                <path
+                                                                    d="M0.414336 14.1421L14.5565 0L15.9707 1.41421L1.82855 15.5563L0.414336 14.1421Z"
+                                                                    fill="#000"
+                                                                />
+                                                                <path
+                                                                    d="M1.41421 0.142113L15.5563 14.2842L14.1421 15.6985L0 1.55633L1.41421 0.142113Z"
+                                                                    fill="#000"
+                                                                />
+                                                            </svg>
+                                                        </button>
                                                     </div>
                                                     <div className="gap-4 flex items-center justify-between">
                                                         <div className="gap-1 flex items-center">
@@ -175,29 +188,6 @@ const Cart = ({ totalPrice }) => {
                                                     </div>
                                                 </div>
                                             </div>
-                                            <button
-                                                className="top-2 right-0 w-4 h-4 flex items-center justify-center absolute cursor-pointer"
-                                                onClick={() =>
-                                                    handleRemove(item.id)
-                                                }
-                                            >
-                                                <svg
-                                                    width="8"
-                                                    height="8"
-                                                    viewBox="0 0 16 16"
-                                                    fill="none"
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                >
-                                                    <path
-                                                        d="M0.414336 14.1421L14.5565 0L15.9707 1.41421L1.82855 15.5563L0.414336 14.1421Z"
-                                                        fill="#000"
-                                                    />
-                                                    <path
-                                                        d="M1.41421 0.142113L15.5563 14.2842L14.1421 15.6985L0 1.55633L1.41421 0.142113Z"
-                                                        fill="#000"
-                                                    />
-                                                </svg>
-                                            </button>
                                         </div>
                                     </li>
                                 ))
@@ -213,7 +203,7 @@ const Cart = ({ totalPrice }) => {
                         <span>SUBTOTAL</span>
                         <div>
                             <span>$</span>
-                            <span>{totalPrice.toFixed(2)}</span>
+                            <span>{formatPrice(totalPrice)}</span>
                         </div>
                     </div>
                     <div className="flex flex-col gap-2">
