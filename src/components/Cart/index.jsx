@@ -3,9 +3,13 @@ import { useSelector } from "react-redux";
 import { useCart, useCartActions, useProductSearch } from "../../hooks/index";
 import { withCartTotal } from "../../hocs/";
 import { formatPrice } from "../../utils/formatPrice";
+import PropTypes from "prop-types";
 
 /**
  * Close Icon component.
+ * @param {Object} props - Component properties.
+ * @param {number} props.width - Width of the icon.
+ * @param {number} props.height - Height of the icon.
  * @returns {JSX.Element} - The Close Icon component.
  */
 const CloseIcon = ({ width = 16, height = 16 }) => (
@@ -27,9 +31,118 @@ const CloseIcon = ({ width = 16, height = 16 }) => (
     </svg>
 );
 
+CloseIcon.propTypes = {
+    width: PropTypes.number,
+    height: PropTypes.number,
+};
+
+/**
+ * Quantity Button component.
+ * @param {Object} props - Component properties.
+ * @param {Function} props.onClick - Click handler function.
+ * @param {boolean} props.disabled - Disable state of the button.
+ * @param {string} props.label - Label of the button.
+ * @returns {JSX.Element} - The Quantity Button component.
+ */
+const QuantityButton = ({ onClick, disabled, label }) => (
+    <button
+        className="w-6 h-6 flex items-center justify-center cursor-pointer"
+        onClick={onClick}
+        disabled={disabled}
+    >
+        {label}
+    </button>
+);
+
+QuantityButton.propTypes = {
+    onClick: PropTypes.func.isRequired,
+    disabled: PropTypes.bool,
+    label: PropTypes.string.isRequired,
+};
+
+/**
+ * Cart Item component.
+ * @param {Object} props - Component properties.
+ * @param {Object} props.item - Cart item.
+ * @param {Function} props.handleRemove - Function to handle item removal.
+ * @param {Function} props.handleQuantityChange - Function to handle quantity change.
+ * @returns {JSX.Element} - The Cart Item component.
+ */
+const CartItem = ({ item, handleRemove, handleQuantityChange }) => (
+    <li
+        key={item.id}
+        className="[&:not(:last-child)]:border-b-[1px] border-solid border-gray-200 pb-4"
+    >
+        <div className="relative">
+            <div className="gap-4 flex justify-between">
+                <div>
+                    <div className="w-[90px] h-[90px] bg-gray-300"></div>
+                </div>
+                <div className="w-full flex flex-col gap-2">
+                    <div className="flex flex-col pt-2">
+                        <h6>{item.name}</h6>
+                        <ul className="gap-1 flex items-center text-xs">
+                            <li>
+                                <span>Size: </span>
+                                <span>XL</span>,
+                            </li>
+                            <li>
+                                <span>Color: </span>
+                                <span>Blue</span>
+                            </li>
+                        </ul>
+                        <button
+                            className="top-2 right-0 w-4 h-4 flex items-center justify-center absolute cursor-pointer"
+                            onClick={() => handleRemove(item.id)}
+                        >
+                            <CloseIcon width={8} height={8} />
+                        </button>
+                    </div>
+                    <div className="gap-4 flex items-center justify-between">
+                        <div className="gap-1 flex items-center">
+                            <QuantityButton
+                                onClick={() =>
+                                    handleQuantityChange(
+                                        item.id,
+                                        item.quantity - 1
+                                    )
+                                }
+                                disabled={item.quantity <= 1}
+                                label="-"
+                            />
+                            <span>{item.quantity}</span>
+                            <QuantityButton
+                                onClick={() =>
+                                    handleQuantityChange(
+                                        item.id,
+                                        item.quantity + 1
+                                    )
+                                }
+                                label="+"
+                            />
+                        </div>
+                        <div>
+                            <span>$</span>
+                            <span className="text-lg">
+                                {formatPrice(item.price)}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </li>
+);
+
+CartItem.propTypes = {
+    item: PropTypes.object.isRequired,
+    handleRemove: PropTypes.func.isRequired,
+    handleQuantityChange: PropTypes.func.isRequired,
+};
+
 /**
  * Cart component displaying items in the shopping cart.
- * @param {Object} props
+ * @param {Object} props - Component properties.
  * @param {number} props.totalPrice - The total price of the items in the cart.
  * @returns {JSX.Element} - The Cart component.
  */
@@ -67,7 +180,7 @@ const Cart = ({ totalPrice }) => {
 
     return (
         <div
-            className={`w-full h-screen fixed bg-white z-50 overflow-hidden before:top-0 before:left-0 before:bg-stone-900 before:fixed before:w-full before:h-screen before:opacity-10 text-sm ${
+            className={`w-full h-screen fixed bg-white z-50 overflow-hidden before:content-[''] before:top-0 before:left-0 before:bg-stone-900 before:fixed before:w-full before:h-screen before:opacity-10 text-sm ${
                 isVisible
                     ? "pointer-events-auto"
                     : "opacity-0 pointer-events-none"
@@ -100,89 +213,12 @@ const Cart = ({ totalPrice }) => {
                     <ul className="flex flex-col gap-4">
                         {filteredItems.length > 0 ? (
                             filteredItems.map((item) => (
-                                <li
+                                <CartItem
                                     key={item.id}
-                                    className="[&:not(:last-child)]:border-b-[1px] border-solid border-gray-200 pb-4"
-                                >
-                                    <div className="relative">
-                                        <div className="gap-4 flex justify-between">
-                                            <div>
-                                                <div className="w-[90px] h-[90px] bg-gray-300"></div>
-                                            </div>
-                                            <div className="w-full flex flex-col gap-2">
-                                                <div className="flex flex-col pt-2">
-                                                    <h6>{item.name}</h6>
-                                                    <ul className="gap-1 flex items-center text-xs">
-                                                        <li>
-                                                            <span>Size: </span>
-                                                            <span>XL</span>,
-                                                        </li>
-                                                        <li>
-                                                            <span>Color: </span>
-                                                            <span>Blue</span>
-                                                        </li>
-                                                    </ul>
-                                                    <button
-                                                        className="top-2 right-0 w-4 h-4 flex items-center justify-center absolute cursor-pointer"
-                                                        onClick={() =>
-                                                            handleRemove(
-                                                                item.id
-                                                            )
-                                                        }
-                                                    >
-                                                        <CloseIcon
-                                                            width={8}
-                                                            height={8}
-                                                        />
-                                                    </button>
-                                                </div>
-                                                <div className="gap-4 flex items-center justify-between">
-                                                    <div className="gap-1 flex items-center">
-                                                        <button
-                                                            className="w-6 h-6 flex items-center justify-center cursor-pointer"
-                                                            onClick={() =>
-                                                                handleQuantityChange(
-                                                                    item.id,
-                                                                    item.quantity -
-                                                                        1
-                                                                )
-                                                            }
-                                                            disabled={
-                                                                item.quantity <=
-                                                                1
-                                                            }
-                                                        >
-                                                            -
-                                                        </button>
-                                                        <span>
-                                                            {item.quantity}
-                                                        </span>
-                                                        <button
-                                                            className="w-6 h-6 flex items-center justify-center cursor-pointer"
-                                                            onClick={() =>
-                                                                handleQuantityChange(
-                                                                    item.id,
-                                                                    item.quantity +
-                                                                        1
-                                                                )
-                                                            }
-                                                        >
-                                                            +
-                                                        </button>
-                                                    </div>
-                                                    <div>
-                                                        <span>$</span>
-                                                        <span className="text-lg">
-                                                            {formatPrice(
-                                                                item.price
-                                                            )}
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </li>
+                                    item={item}
+                                    handleRemove={handleRemove}
+                                    handleQuantityChange={handleQuantityChange}
+                                />
                             ))
                         ) : (
                             <p className="text-center">
@@ -211,6 +247,10 @@ const Cart = ({ totalPrice }) => {
             </div>
         </div>
     );
+};
+
+Cart.propTypes = {
+    totalPrice: PropTypes.number.isRequired,
 };
 
 // Enhance the Cart component with HOCs
