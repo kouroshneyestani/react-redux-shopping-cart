@@ -1,15 +1,14 @@
 import React, { useMemo } from "react";
+import PropTypes from "prop-types";
 import { useSelector } from "react-redux";
 import { useCart, useCartActions, useProductSearch } from "../../hooks/index";
 import { withCartTotal } from "../../hocs/";
 import { formatPrice } from "../../utils/formatPrice";
-import PropTypes from "prop-types";
 
 /**
  * Close Icon component.
- * @param {Object} props - Component properties.
- * @param {number} props.width - Width of the icon.
- * @param {number} props.height - Height of the icon.
+ * @param {number} width - Width of the icon.
+ * @param {number} height - Height of the icon.
  * @returns {JSX.Element} - The Close Icon component.
  */
 const CloseIcon = ({ width = 16, height = 16 }) => (
@@ -31,48 +30,55 @@ const CloseIcon = ({ width = 16, height = 16 }) => (
     </svg>
 );
 
-CloseIcon.propTypes = {
-    width: PropTypes.number,
-    height: PropTypes.number,
-};
-
 /**
- * Quantity Button component.
- * @param {Object} props - Component properties.
- * @param {Function} props.onClick - Click handler function.
- * @param {boolean} props.disabled - Disable state of the button.
- * @param {string} props.label - Label of the button.
- * @returns {JSX.Element} - The Quantity Button component.
+ * Button component for changing quantity in the cart.
+ * @param {Object} props
+ * @param {number} props.quantity - The current quantity.
+ * @param {function} props.onIncrement - Function to increment the quantity.
+ * @param {function} props.onDecrement - Function to decrement the quantity.
+ * @returns {JSX.Element} - The QuantityButton component.
  */
-const QuantityButton = ({ onClick, disabled, label }) => (
-    <button
-        className="w-6 h-6 flex items-center justify-center cursor-pointer"
-        onClick={onClick}
-        disabled={disabled}
-    >
-        {label}
-    </button>
+const QuantityButton = ({
+    quantity,
+    onIncrement,
+    onDecrement,
+    disabledDecrement,
+}) => (
+    <div className="gap-1 flex items-center">
+        <button
+            className="w-6 h-6 flex items-center justify-center cursor-pointer"
+            onClick={onDecrement}
+            disabled={disabledDecrement}
+        >
+            -
+        </button>
+        <span>{quantity}</span>
+        <button
+            className="w-6 h-6 flex items-center justify-center cursor-pointer"
+            onClick={onIncrement}
+        >
+            +
+        </button>
+    </div>
 );
 
 QuantityButton.propTypes = {
-    onClick: PropTypes.func.isRequired,
-    disabled: PropTypes.bool,
-    label: PropTypes.string.isRequired,
+    quantity: PropTypes.number.isRequired,
+    onIncrement: PropTypes.func.isRequired,
+    onDecrement: PropTypes.func.isRequired,
+    disabledDecrement: PropTypes.bool,
 };
 
 /**
- * Cart Item component.
- * @param {Object} props - Component properties.
- * @param {Object} props.item - Cart item.
- * @param {Function} props.handleRemove - Function to handle item removal.
- * @param {Function} props.handleQuantityChange - Function to handle quantity change.
- * @returns {JSX.Element} - The Cart Item component.
+ * Cart Item component for displaying individual cart items.
+ * @param {Object} props
+ * @param {Object} props.item - The item to display.
+ * @param {function} props.onRemove - Function to remove the item from the cart.
+ * @param {function} props.onQuantityChange - Function to update the item quantity.
+ * @returns {JSX.Element} - The CartItem component.
  */
-const CartItem = ({ item, handleRemove, handleQuantityChange }) => (
-    <li
-        key={item.id}
-        className="[&:not(:last-child)]:border-b-[1px] border-solid border-gray-200 pb-4"
-    >
+const CartItem = ({ item, onRemove, onQuantityChange }) => (
+    <li className="[&:not(:last-child)]:border-b-[1px] border-solid border-gray-200 pb-4">
         <div className="relative">
             <div className="gap-4 flex justify-between">
                 <div>
@@ -93,34 +99,22 @@ const CartItem = ({ item, handleRemove, handleQuantityChange }) => (
                         </ul>
                         <button
                             className="top-2 right-0 w-4 h-4 flex items-center justify-center absolute cursor-pointer"
-                            onClick={() => handleRemove(item.id)}
+                            onClick={() => onRemove(item.id)}
                         >
                             <CloseIcon width={8} height={8} />
                         </button>
                     </div>
                     <div className="gap-4 flex items-center justify-between">
-                        <div className="gap-1 flex items-center">
-                            <QuantityButton
-                                onClick={() =>
-                                    handleQuantityChange(
-                                        item.id,
-                                        item.quantity - 1
-                                    )
-                                }
-                                disabled={item.quantity <= 1}
-                                label="-"
-                            />
-                            <span>{item.quantity}</span>
-                            <QuantityButton
-                                onClick={() =>
-                                    handleQuantityChange(
-                                        item.id,
-                                        item.quantity + 1
-                                    )
-                                }
-                                label="+"
-                            />
-                        </div>
+                        <QuantityButton
+                            quantity={item.quantity}
+                            onIncrement={() =>
+                                onQuantityChange(item.id, item.quantity + 1)
+                            }
+                            onDecrement={() =>
+                                onQuantityChange(item.id, item.quantity - 1)
+                            }
+                            disabledDecrement={item.quantity <= 1}
+                        />
                         <div>
                             <span>$</span>
                             <span className="text-lg">
@@ -136,16 +130,10 @@ const CartItem = ({ item, handleRemove, handleQuantityChange }) => (
 
 CartItem.propTypes = {
     item: PropTypes.object.isRequired,
-    handleRemove: PropTypes.func.isRequired,
-    handleQuantityChange: PropTypes.func.isRequired,
+    onRemove: PropTypes.func.isRequired,
+    onQuantityChange: PropTypes.func.isRequired,
 };
 
-/**
- * Cart component displaying items in the shopping cart.
- * @param {Object} props - Component properties.
- * @param {number} props.totalPrice - The total price of the items in the cart.
- * @returns {JSX.Element} - The Cart component.
- */
 const Cart = ({ totalPrice }) => {
     const { isVisible, toggleCart } = useCart(); // Use the custom cart hook for visibility
     const { searchTerm, updateSearchTerm } = useProductSearch(); // Hook for product search
@@ -180,7 +168,7 @@ const Cart = ({ totalPrice }) => {
 
     return (
         <div
-            className={`w-full h-screen fixed bg-white z-50 overflow-hidden before:content-[''] before:top-0 before:left-0 before:bg-stone-900 before:fixed before:w-full before:h-screen before:opacity-10 text-sm ${
+            className={`w-full h-screen fixed bg-white z-50 overflow-hidden before:top-0 before:left-0 before:bg-stone-900 before:fixed before:w-full before:h-screen before:opacity-10 text-sm ${
                 isVisible
                     ? "pointer-events-auto"
                     : "opacity-0 pointer-events-none"
@@ -216,10 +204,14 @@ const Cart = ({ totalPrice }) => {
                                 <CartItem
                                     key={item.id}
                                     item={item}
-                                    handleRemove={handleRemove}
-                                    handleQuantityChange={handleQuantityChange}
+                                    onRemove={handleRemove}
+                                    onQuantityChange={handleQuantityChange}
                                 />
                             ))
+                        ) : cartItems.length > 0 ? (
+                            <p className="text-center">
+                                No products match your search.
+                            </p>
                         ) : (
                             <p className="text-center">
                                 Your cart is empty. Start shopping!
