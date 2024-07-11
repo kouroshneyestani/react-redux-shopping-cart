@@ -1,13 +1,24 @@
-// src/contexts/ShoppingCartContext.jsx
 import React, { createContext, useState, useContext } from "react";
 
-// Create a Context for the ShoppingCart
-const ShoppingCartContext = createContext();
+/**
+ * Context for managing the visibility of the shopping cart.
+ * @type {React.Context<{ isVisible: boolean, toggleCart: () => void }>}
+ */
+export const ShoppingCartContext = createContext();
 
-// Create a Provider Component
+/**
+ * Provider Component for ShoppingCartContext.
+ * @param {Object} props - React props.
+ * @param {React.ReactNode} props.children - The children components.
+ * @returns {JSX.Element} - The ShoppingCartProvider component.
+ */
 export const ShoppingCartProvider = ({ children }) => {
-    const [isVisible, setIsVisible] = useState(false); // Changed to false to hide the cart initially
+    // State to manage cart visibility
+    const [isVisible, setIsVisible] = useState(false);
 
+    /**
+     * Toggles the visibility of the shopping cart.
+     */
     const toggleCart = () => {
         setIsVisible((prev) => !prev);
     };
@@ -19,7 +30,11 @@ export const ShoppingCartProvider = ({ children }) => {
     );
 };
 
-// Custom hook for using ShoppingCartContext
+/**
+ * Custom hook for accessing ShoppingCartContext.
+ * @returns {{ isVisible: boolean, toggleCart: () => void }} - The context values.
+ * @throws Will throw an error if used outside of ShoppingCartProvider.
+ */
 export const useShoppingCart = () => {
     const context = useContext(ShoppingCartContext);
     if (!context) {
