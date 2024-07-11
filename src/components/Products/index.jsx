@@ -1,17 +1,24 @@
-import { useDispatch } from "react-redux"; // Import useDispatch hook to send actions to the store
-import { addItem } from "../../features/cart/cartSlice"; // Import the addItem action from the cart slice
+import React, { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import { addItem } from "../../features/cart/cartSlice";
+import { fetchProducts } from "../../services/productService";
 
-// Define a list of fake products
-const products = [
-    { id: "1", name: "Product 1", price: 10 },
-    { id: "2", name: "Product 2", price: 15 },
-    { id: "3", name: "Product 3", price: 20 },
-];
-
+/**
+ * Products component displaying available products.
+ * @returns {JSX.Element} - The Products component.
+ */
 const Products = () => {
-    const dispatch = useDispatch(); // Get the dispatch function to send actions
+    const dispatch = useDispatch();
+    const [products, setProducts] = useState([]);
 
-    // Handler function to add a product to the cart from the list of products
+    // Fetch products data when the component mounts
+    useEffect(() => {
+        fetchProducts().then((data) => {
+            setProducts(data); // Set the products data to state
+        });
+    }, []);
+
+    // Handler function to add a product to the cart
     const handleAddProductToCart = (product) => {
         dispatch(addItem({ ...product, quantity: 1 })); // Add the product to the cart with a quantity of 1
     };
