@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { useSelector } from "react-redux";
 import { useCart, useCartActions, useProductSearch } from "../../hooks/index";
 import { withCartTotal } from "../../hocs/";
@@ -40,6 +40,15 @@ const Cart = ({ totalPrice }) => {
 
     // Actions from custom hook
     const { removeFromCart, updateCartItem } = useCartActions();
+
+    // Memoized filtered items
+    const filteredItems = useMemo(
+        () =>
+            cartItems.filter((item) =>
+                item.name.toLowerCase().includes(searchTerm.toLowerCase())
+            ),
+        [cartItems, searchTerm]
+    );
 
     // Handler to search products
     const handleSearch = (event) => {
@@ -89,104 +98,92 @@ const Cart = ({ totalPrice }) => {
                         />
                     )}
                     <ul className="flex flex-col gap-4">
-                        {cartItems.length > 0 ? (
-                            cartItems
-                                .filter((item) =>
-                                    item.name
-                                        .toLowerCase()
-                                        .includes(searchTerm.toLowerCase())
-                                )
-                                .map((item) => (
-                                    <li
-                                        key={item.id}
-                                        className="[&:not(:last-child)]:border-b-[1px] border-solid border-gray-200 pb-4"
-                                    >
-                                        <div className="relative">
-                                            <div className="gap-4 flex justify-between">
-                                                <div>
-                                                    <div className="w-[90px] h-[90px] bg-gray-300"></div>
+                        {filteredItems.length > 0 ? (
+                            filteredItems.map((item) => (
+                                <li
+                                    key={item.id}
+                                    className="[&:not(:last-child)]:border-b-[1px] border-solid border-gray-200 pb-4"
+                                >
+                                    <div className="relative">
+                                        <div className="gap-4 flex justify-between">
+                                            <div>
+                                                <div className="w-[90px] h-[90px] bg-gray-300"></div>
+                                            </div>
+                                            <div className="w-full flex flex-col gap-2">
+                                                <div className="flex flex-col pt-2">
+                                                    <h6>{item.name}</h6>
+                                                    <ul className="gap-1 flex items-center text-xs">
+                                                        <li>
+                                                            <span>Size: </span>
+                                                            <span>XL</span>,
+                                                        </li>
+                                                        <li>
+                                                            <span>Color: </span>
+                                                            <span>Blue</span>
+                                                        </li>
+                                                    </ul>
+                                                    <button
+                                                        className="top-2 right-0 w-4 h-4 flex items-center justify-center absolute cursor-pointer"
+                                                        onClick={() =>
+                                                            handleRemove(
+                                                                item.id
+                                                            )
+                                                        }
+                                                    >
+                                                        <CloseIcon
+                                                            width={8}
+                                                            height={8}
+                                                        />
+                                                    </button>
                                                 </div>
-                                                <div className="w-full flex flex-col gap-2">
-                                                    <div className="flex flex-col pt-2">
-                                                        <h6>{item.name}</h6>
-                                                        <ul className="gap-1 flex items-center text-xs">
-                                                            <li>
-                                                                <span>
-                                                                    Size:{" "}
-                                                                </span>
-                                                                <span>XL</span>,
-                                                            </li>
-                                                            <li>
-                                                                <span>
-                                                                    Color:{" "}
-                                                                </span>
-                                                                <span>
-                                                                    Blue
-                                                                </span>
-                                                            </li>
-                                                        </ul>
+                                                <div className="gap-4 flex items-center justify-between">
+                                                    <div className="gap-1 flex items-center">
                                                         <button
-                                                            className="top-2 right-0 w-4 h-4 flex items-center justify-center absolute cursor-pointer"
+                                                            className="w-6 h-6 flex items-center justify-center cursor-pointer"
                                                             onClick={() =>
-                                                                handleRemove(
-                                                                    item.id
+                                                                handleQuantityChange(
+                                                                    item.id,
+                                                                    item.quantity -
+                                                                        1
+                                                                )
+                                                            }
+                                                            disabled={
+                                                                item.quantity <=
+                                                                1
+                                                            }
+                                                        >
+                                                            -
+                                                        </button>
+                                                        <span>
+                                                            {item.quantity}
+                                                        </span>
+                                                        <button
+                                                            className="w-6 h-6 flex items-center justify-center cursor-pointer"
+                                                            onClick={() =>
+                                                                handleQuantityChange(
+                                                                    item.id,
+                                                                    item.quantity +
+                                                                        1
                                                                 )
                                                             }
                                                         >
-                                                            <CloseIcon
-                                                                width={8}
-                                                                height={8}
-                                                            />
+                                                            +
                                                         </button>
                                                     </div>
-                                                    <div className="gap-4 flex items-center justify-between">
-                                                        <div className="gap-1 flex items-center">
-                                                            <button
-                                                                className="w-6 h-6 flex items-center justify-center cursor-pointer"
-                                                                onClick={() =>
-                                                                    handleQuantityChange(
-                                                                        item.id,
-                                                                        item.quantity -
-                                                                            1
-                                                                    )
-                                                                }
-                                                                disabled={
-                                                                    item.quantity <=
-                                                                    1
-                                                                }
-                                                            >
-                                                                -
-                                                            </button>
-                                                            <span>
-                                                                {item.quantity}
-                                                            </span>
-                                                            <button
-                                                                className="w-6 h-6 flex items-center justify-center cursor-pointer"
-                                                                onClick={() =>
-                                                                    handleQuantityChange(
-                                                                        item.id,
-                                                                        item.quantity +
-                                                                            1
-                                                                    )
-                                                                }
-                                                            >
-                                                                +
-                                                            </button>
-                                                        </div>
-                                                        <div>
-                                                            <span>$</span>
-                                                            <span className="text-lg">
-                                                                {formatPrice(
-                                                                    item.price
-                                                                )}
-                                                            </span>
-                                                        </div>
+                                                    <div>
+                                                        <span>$</span>
+                                                        <span className="text-lg">
+                                                            {formatPrice(
+                                                                item.price
+                                                            )}
+                                                        </span>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </li>
-                                ))
+                                    </div>
+                                </li>
+                            ))
                         ) : (
                             <p className="text-center">
                                 Your cart is empty. Start shopping!
