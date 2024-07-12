@@ -1,8 +1,13 @@
 import React, { useMemo } from "react";
 import PropTypes from "prop-types";
-import { useSelector } from "react-redux";
-import { useCart, useCartActions, useProductSearch } from "../../hooks/index";
-import { withCartTotal } from "../../hocs/";
+import { useDispatch, useSelector } from "react-redux";
+import {
+    removeItem,
+    updateQuantity,
+    selectTotalPrice,
+    selectIsCartOpen,
+    closeCart,
+} from "../../features/cart/cartSlice";
 import { formatPrice } from "../../utils/formatPrice";
 
 /**
@@ -36,6 +41,7 @@ const CloseIcon = ({ width = 16, height = 16 }) => (
  * @param {number} props.quantity - The current quantity.
  * @param {function} props.onIncrement - Function to increment the quantity.
  * @param {function} props.onDecrement - Function to decrement the quantity.
+ * @param {boolean} props.disabledDecrement - Whether decrement is disabled.
  * @returns {JSX.Element} - The QuantityButton component.
  */
 const QuantityButton = ({
@@ -82,7 +88,11 @@ const CartItem = ({ item, onRemove, onQuantityChange }) => (
         <div className="relative">
             <div className="gap-4 flex justify-between">
                 <div>
-                    <div className="w-[90px] h-[90px] bg-gray-300"></div>
+                    <img
+                        src={item.image}
+                        alt={item.name}
+                        className="w-[90px] h-[90px] object-cover"
+                    />
                 </div>
                 <div className="w-full flex flex-col gap-2">
                     <div className="flex flex-col pt-2">
@@ -134,36 +144,23 @@ CartItem.propTypes = {
     onQuantityChange: PropTypes.func.isRequired,
 };
 
-const Cart = ({ totalPrice }) => {
-    const { isVisible, toggleCart } = useCart(); // Use the custom cart hook for visibility
-    const { searchTerm, updateSearchTerm } = useProductSearch(); // Hook for product search
-    const cartItems = useSelector((state) => state.cart?.items); // Get cart items from Redux store
-
-    // Actions from custom hook
-    const { removeFromCart, updateCartItem } = useCartActions();
+const Cart = () => {
+    const dispatch = useDispatch();
+    const isVisible = useSelector(selectIsCartOpen);
+    const cartItems = useSelector((state) => state.cart.items);
+    const totalPrice = useSelector(selectTotalPrice);
 
     // Memoized filtered items
-    const filteredItems = useMemo(
-        () =>
-            cartItems.filter((item) =>
-                item.name.toLowerCase().includes(searchTerm.toLowerCase())
-            ),
-        [cartItems, searchTerm]
-    );
-
-    // Handler to search products
-    const handleSearch = (event) => {
-        updateSearchTerm(event.target.value);
-    };
+    const filteredItems = useMemo(() => cartItems, [cartItems]);
 
     // Handler to remove an item
     const handleRemove = (id) => {
-        removeFromCart(id);
+        dispatch(removeItem({ id }));
     };
 
     // Handler to update quantity
     const handleQuantityChange = (id, quantity) => {
-        updateCartItem(id, quantity);
+        dispatch(updateQuantity({ id, quantity }));
     };
 
     return (
@@ -183,59 +180,48 @@ const Cart = ({ totalPrice }) => {
                     <span className="text-md">Shopping Bag</span>
                     <button
                         className="w-4 h-4 flex items-center justify-center cursor-pointer"
-                        onClick={toggleCart}
+                        onClick={() => dispatch(closeCart())}
                     >
                         <CloseIcon />
                     </button>
                 </header>
                 <article className="py-6 px-6 overflow-x-auto">
-                    {cartItems.length > 0 && (
-                        <input
-                            type="text"
-                            value={searchTerm}
-                            onChange={handleSearch}
-                            placeholder="Search products"
-                            className="w-full mb-4 p-2 border border-gray-300"
-                        />
-                    )}
-                    <ul className="flex flex-col gap-4">
-                        {filteredItems.length > 0 ? (
-                            filteredItems.map((item) => (
+                    {cartItems.length > 0 ? (
+                        <ul className="flex flex-col gap-4">
+                            {filteredItems.map((item) => (
                                 <CartItem
                                     key={item.id}
                                     item={item}
                                     onRemove={handleRemove}
                                     onQuantityChange={handleQuantityChange}
                                 />
-                            ))
-                        ) : cartItems.length > 0 ? (
-                            <p className="text-center">
-                                No products match your search.
-                            </p>
-                        ) : (
-                            <p className="text-center">
-                                Your cart is empty. Start shopping!
-                            </p>
-                        )}
-                    </ul>
+                            ))}
+                        </ul>
+                    ) : (
+                        <p className="text-center">
+                            Your cart is empty. Start shopping!
+                        </p>
+                    )}
                 </article>
-                <footer className="w-full left-0 bottom-0 absolute flex flex-col gap-4 px-6 py-6">
-                    <div className="flex items-center justify-between">
-                        <span>SUBTOTAL</span>
-                        <div>
-                            <span>$</span>
-                            <span>{formatPrice(totalPrice)}</span>
+                {cartItems.length > 0 && (
+                    <footer className="w-full left-0 bottom-0 absolute flex flex-col gap-4 px-6 py-6">
+                        <div className="flex items-center justify-between">
+                            <span>SUBTOTAL</span>
+                            <div>
+                                <span>$</span>
+                                <span>{formatPrice(totalPrice)}</span>
+                            </div>
                         </div>
-                    </div>
-                    <div className="flex flex-col gap-2">
-                        <button className="w-full h-10 bg-gray-200 hover:bg-gray-300 flex items-center justify-center">
-                            <span>View Cart</span>
-                        </button>
-                        <button className="w-full h-10 bg-black hover:bg-black flex items-center justify-center text-white">
-                            <span>Checkout</span>
-                        </button>
-                    </div>
-                </footer>
+                        <div className="flex flex-col gap-2">
+                            <button className="w-full h-10 bg-gray-200 hover:bg-gray-300 flex items-center justify-center">
+                                <span>View Cart</span>
+                            </button>
+                            <button className="w-full h-10 bg-black hover:bg-black flex items-center justify-center text-white">
+                                <span>Checkout</span>
+                            </button>
+                        </div>
+                    </footer>
+                )}
             </div>
         </div>
     );
@@ -245,5 +231,4 @@ Cart.propTypes = {
     totalPrice: PropTypes.number.isRequired,
 };
 
-// Enhance the Cart component with HOCs
-export default withCartTotal(Cart);
+export default Cart;
