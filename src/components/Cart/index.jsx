@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useEffect, useMemo, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
     removeItem,
@@ -112,6 +112,7 @@ const Cart = () => {
     const isVisible = useSelector(selectIsCartOpen);
     const cartItems = useSelector((state) => state.cart.items);
     const totalPrice = useSelector(selectTotalPrice);
+    const cartRef = useRef(null);
 
     // Memoized filtered items
     const filteredItems = useMemo(() => cartItems, [cartItems]);
@@ -126,6 +127,22 @@ const Cart = () => {
         dispatch(updateQuantity({ id, quantity }));
     };
 
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (cartRef.current && !cartRef.current.contains(event.target)) {
+                dispatch(closeCart());
+            }
+        };
+
+        if (isVisible) {
+            document.addEventListener("mousedown", handleClickOutside);
+        }
+
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, [dispatch, isVisible]);
+
     return (
         <div
             className={`w-full h-screen fixed bg-white z-50 overflow-hidden before:top-0 before:left-0 before:bg-stone-900 before:fixed before:w-full before:h-screen before:opacity-10 text-sm ${
@@ -135,6 +152,7 @@ const Cart = () => {
             }`}
         >
             <div
+                ref={cartRef}
                 className={`w-[340px] max-w-[90%] h-screen top-0 right-0 fixed bg-white overflow-x-hidden transition-all ${
                     isVisible ? "translate-x-0" : "translate-x-full"
                 }`}
