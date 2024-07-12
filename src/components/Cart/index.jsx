@@ -145,15 +145,13 @@ const Cart = () => {
 
     return (
         <div
-            className={`w-full h-screen fixed bg-white z-50 overflow-hidden before:top-0 before:left-0 before:bg-stone-900 before:fixed before:w-full before:h-screen before:opacity-10 text-sm ${
-                isVisible
-                    ? "pointer-events-auto"
-                    : "opacity-0 pointer-events-none"
-            }`}
+            className={`w-full h-screen fixed bg-stone-900 z-50 overflow-hidden before:top-0 before:left-0 before:bg-stone-900 before:fixed before:w-full before:h-screen before:opacity-10 text-sm ${
+                isVisible ? "opacity-100" : "opacity-0 pointer-events-none"
+            } transition-opacity duration-300 ease-in-out`}
         >
             <div
                 ref={cartRef}
-                className={`w-[340px] max-w-[90%] h-screen top-0 right-0 fixed bg-white overflow-x-hidden transition-all ${
+                className={`w-[340px] max-w-[90%] h-screen top-0 right-0 fixed bg-white overflow-x-hidden transition-transform duration-300 ease-in-out ${
                     isVisible ? "translate-x-0" : "translate-x-full"
                 }`}
             >
