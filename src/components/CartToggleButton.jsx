@@ -1,9 +1,17 @@
-import { useShoppingCart } from "../contexts/ShoppingCartContext";
 
+import { useDispatch } from "react-redux";
+import { toggleCart } from "../features/cart/cartSlice";
+
+/**
+ * Button component to toggle the shopping cart visibility.
+ * @param {Object} props - React props.
+ * @param {React.ReactNode} props.children - The content to display inside the button.
+ * @returns {JSX.Element} - The CartToggleButton component.
+ */
 const CartToggleButton = ({ children }) => {
-    const { toggleCart } = useShoppingCart();
+    const dispatch = useDispatch();
 
-    return <div onClick={toggleCart}>{children}</div>;
+    return <button onClick={() => dispatch(toggleCart())}>{children}</button>;
 };
 
 export default CartToggleButton;
