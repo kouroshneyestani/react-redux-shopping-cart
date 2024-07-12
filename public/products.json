@@ -1,5 +1,278 @@
 [
-    { "id": "1", "name": "Product 1", "price": 10 },
-    { "id": "2", "name": "Product 2", "price": 15 },
-    { "id": "3", "name": "Product 3", "price": 20 }
+    {
+        "id": "1",
+        "name": "Elegant Evening Dress",
+        "price": 120,
+        "category": "Dresses",
+        "image": "/images/products/product_1.webp",
+        "discount": 15,
+        "description": "An elegant evening dress with a sleek design, perfect for formal occasions.",
+        "colors": ["Red", "Black", "Navy"],
+        "sizes": ["S", "M", "L", "XL"],
+        "reviews": [
+            {
+                "reviewer": "Alice",
+                "rating": 5,
+                "comment": "Beautiful dress, fits perfectly!"
+            },
+            {
+                "reviewer": "Bob",
+                "rating": 4,
+                "comment": "Nice dress, but the color was slightly different from the picture."
+            }
+        ]
+    },
+    {
+        "id": "2",
+        "name": "Casual Summer Dress",
+        "price": 45,
+        "category": "Dresses",
+        "image": "/images/products/product_2.webp",
+        "discount": 10,
+        "description": "A lightweight and casual summer dress ideal for warm weather.",
+        "colors": ["Floral", "Blue", "Green"],
+        "sizes": ["M", "L", "XL"],
+        "reviews": [
+            {
+                "reviewer": "Samantha",
+                "rating": 4,
+                "comment": "Comfortable and cute, though the fit was a bit loose."
+            },
+            {
+                "reviewer": "John",
+                "rating": 3,
+                "comment": "The dress was nice but arrived with a few wrinkles."
+            }
+        ]
+    },
+    {
+        "id": "3",
+        "name": "Winter Coat",
+        "price": 150,
+        "category": "Outerwear",
+        "image": "/images/products/product_3.webp",
+        "discount": 20,
+        "description": "A warm winter coat designed to keep you cozy during the cold months.",
+        "colors": ["Black", "Gray", "Brown"],
+        "sizes": ["S", "M", "L", "XL", "XXL"],
+        "reviews": [
+            {
+                "reviewer": "Emma",
+                "rating": 5,
+                "comment": "Fantastic coat, keeps me warm and stylish!"
+            },
+            {
+                "reviewer": "James",
+                "rating": 4,
+                "comment": "Good quality coat, though it runs a bit large."
+            }
+        ]
+    },
+    {
+        "id": "4",
+        "name": "Classic Blue Jeans",
+        "price": 60,
+        "category": "Bottoms",
+        "image": "/images/products/product_4.webp",
+        "discount": 5,
+        "description": "Classic blue jeans with a timeless fit and durable fabric.",
+        "colors": ["Blue", "Black"],
+        "sizes": ["S", "M", "L", "XL"],
+        "reviews": [
+            {
+                "reviewer": "Oliver",
+                "rating": 4,
+                "comment": "Great jeans, but the fit is a bit snug for the size."
+            },
+            {
+                "reviewer": "Sophia",
+                "rating": 5,
+                "comment": "Love these jeans! Comfortable and stylish."
+            }
+        ]
+    },
+    {
+        "id": "5",
+        "name": "Sporty Running Shoes",
+        "price": 85,
+        "category": "Footwear",
+        "image": "/images/products/product_5.webp",
+        "discount": 10,
+        "description": "Sporty running shoes designed for comfort and performance during workouts.",
+        "colors": ["Black", "Red", "Gray"],
+        "sizes": ["7", "8", "9", "10", "11"],
+        "reviews": [
+            {
+                "reviewer": "Lucas",
+                "rating": 5,
+                "comment": "Excellent running shoes! Very comfortable and supportive."
+            },
+            {
+                "reviewer": "Mia",
+                "rating": 4,
+                "comment": "Good shoes, but the sizes run a bit small."
+            }
+        ]
+    },
+    {
+        "id": "6",
+        "name": "Stylish Sunglasses",
+        "price": 30,
+        "category": "Accessories",
+        "image": "/images/products/product_6.webp",
+        "discount": 5,
+        "description": "Stylish sunglasses to protect your eyes and complete your look.",
+        "colors": ["Black", "Brown", "Blue"],
+        "sizes": ["One Size"],
+        "reviews": [
+            {
+                "reviewer": "Liam",
+                "rating": 4,
+                "comment": "Nice sunglasses, but the frame feels a bit flimsy."
+            },
+            {
+                "reviewer": "Olivia",
+                "rating": 5,
+                "comment": "Perfect sunglasses for summer!"
+            }
+        ]
+    },
+    {
+        "id": "7",
+        "name": "Elegant Handbag",
+        "price": 95,
+        "category": "Accessories",
+        "image": "/images/products/product_7.webp",
+        "discount": 15,
+        "description": "An elegant handbag that adds a touch of sophistication to any outfit.",
+        "colors": ["Black", "Beige", "Red"],
+        "sizes": ["One Size"],
+        "reviews": [
+            {
+                "reviewer": "Charlotte",
+                "rating": 5,
+                "comment": "Beautiful handbag, great quality!"
+            },
+            {
+                "reviewer": "Ethan",
+                "rating": 4,
+                "comment": "Lovely handbag, but the strap is a bit short for my liking."
+            }
+        ]
+    },
+    {
+        "id": "8",
+        "name": "Cozy Knit Sweater",
+        "price": 70,
+        "category": "Sweaters",
+        "image": "/images/products/product_8.webp",
+        "discount": 20,
+        "description": "A cozy knit sweater that will keep you warm and stylish during chilly days.",
+        "colors": ["Gray", "Cream", "Brown"],
+        "sizes": ["S", "M", "L", "XL"],
+        "reviews": [
+            {
+                "reviewer": "Ava",
+                "rating": 5,
+                "comment": "Soft and warm, I love this sweater!"
+            },
+            {
+                "reviewer": "William",
+                "rating": 4,
+                "comment": "Great sweater, but it sheds a little."
+            }
+        ]
+    },
+    {
+        "id": "9",
+        "name": "Graphic T-Shirt",
+        "price": 25,
+        "category": "T-Shirts",
+        "image": "/images/products/product_9.webp",
+        "discount": 5,
+        "description": "A trendy graphic t-shirt featuring unique designs and comfortable fabric.",
+        "colors": ["White", "Black", "Red"],
+        "sizes": ["S", "M", "L", "XL"],
+        "reviews": [
+            {
+                "reviewer": "Isabella",
+                "rating": 4,
+                "comment": "Cool design, but the shirt shrank a bit after washing."
+            },
+            {
+                "reviewer": "Noah",
+                "rating": 5,
+                "comment": "Love the graphic on this t-shirt, fits perfectly!"
+            }
+        ]
+    },
+    {
+        "id": "10",
+        "name": "Chic Ankle Boots",
+        "price": 75,
+        "category": "Footwear",
+        "image": "/images/products/product_10.webp",
+        "discount": 10,
+        "description": "Chic ankle boots that combine style and comfort for everyday wear.",
+        "colors": ["Black", "Tan", "Gray"],
+        "sizes": ["6", "7", "8", "9", "10"],
+        "reviews": [
+            {
+                "reviewer": "Mason",
+                "rating": 4,
+                "comment": "Stylish boots, but they took a while to break in."
+            },
+            {
+                "reviewer": "Emma",
+                "rating": 5,
+                "comment": "Love these boots, they are both stylish and comfortable!"
+            }
+        ]
+    },
+    {
+        "id": "11",
+        "name": "Formal Button-Down Shirt",
+        "price": 50,
+        "category": "Shirts",
+        "image": "/images/products/product_11.webp",
+        "discount": 10,
+        "description": "A classic formal button-down shirt ideal for business or special occasions.",
+        "colors": ["White", "Blue", "Gray"],
+        "sizes": ["S", "M", "L", "XL"],
+        "reviews": [
+            {
+                "reviewer": "Liam",
+                "rating": 5,
+                "comment": "Perfect shirt for work, fits well and looks professional."
+            },
+            {
+                "reviewer": "Sophia",
+                "rating": 4,
+                "comment": "Good quality shirt, but I wish it was a bit softer."
+            }
+        ]
+    },
+    {
+        "id": "12",
+        "name": "Sporty Yoga Pants",
+        "price": 40,
+        "category": "Activewear",
+        "image": "/images/products/product_12.webp",
+        "discount": 5,
+        "description": "Comfortable yoga pants designed for flexibility and support during workouts.",
+        "colors": ["Black", "Purple", "Pink"],
+        "sizes": ["S", "M", "L", "XL"],
+        "reviews": [
+            {
+                "reviewer": "Liam",
+                "rating": 5,
+                "comment": "Perfect shirt for work, fits well and looks professional."
+            },
+            {
+                "reviewer": "Sophia",
+                "rating": 4,
+                "comment": "Good quality shirt, but I wish it was a bit softer."
+            }
+        ]
+    }
 ]
