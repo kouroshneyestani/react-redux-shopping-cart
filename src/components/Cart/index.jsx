@@ -1,5 +1,4 @@
 import React, { useMemo } from "react";
-import PropTypes from "prop-types";
 import { useDispatch, useSelector } from "react-redux";
 import {
     removeItem,
@@ -10,12 +9,6 @@ import {
 } from "../../features/cart/cartSlice";
 import { formatPrice } from "../../utils/formatPrice";
 
-/**
- * Close Icon component.
- * @param {number} width - Width of the icon.
- * @param {number} height - Height of the icon.
- * @returns {JSX.Element} - The Close Icon component.
- */
 const CloseIcon = ({ width = 16, height = 16 }) => (
     <svg
         width={width}
@@ -35,15 +28,6 @@ const CloseIcon = ({ width = 16, height = 16 }) => (
     </svg>
 );
 
-/**
- * Button component for changing quantity in the cart.
- * @param {Object} props
- * @param {number} props.quantity - The current quantity.
- * @param {function} props.onIncrement - Function to increment the quantity.
- * @param {function} props.onDecrement - Function to decrement the quantity.
- * @param {boolean} props.disabledDecrement - Whether decrement is disabled.
- * @returns {JSX.Element} - The QuantityButton component.
- */
 const QuantityButton = ({
     quantity,
     onIncrement,
@@ -68,21 +52,6 @@ const QuantityButton = ({
     </div>
 );
 
-QuantityButton.propTypes = {
-    quantity: PropTypes.number.isRequired,
-    onIncrement: PropTypes.func.isRequired,
-    onDecrement: PropTypes.func.isRequired,
-    disabledDecrement: PropTypes.bool,
-};
-
-/**
- * Cart Item component for displaying individual cart items.
- * @param {Object} props
- * @param {Object} props.item - The item to display.
- * @param {function} props.onRemove - Function to remove the item from the cart.
- * @param {function} props.onQuantityChange - Function to update the item quantity.
- * @returns {JSX.Element} - The CartItem component.
- */
 const CartItem = ({ item, onRemove, onQuantityChange }) => (
     <li className="[&:not(:last-child)]:border-b-[1px] border-solid border-gray-200 pb-4">
         <div className="relative">
@@ -137,12 +106,6 @@ const CartItem = ({ item, onRemove, onQuantityChange }) => (
         </div>
     </li>
 );
-
-CartItem.propTypes = {
-    item: PropTypes.object.isRequired,
-    onRemove: PropTypes.func.isRequired,
-    onQuantityChange: PropTypes.func.isRequired,
-};
 
 const Cart = () => {
     const dispatch = useDispatch();
@@ -225,10 +188,6 @@ const Cart = () => {
             </div>
         </div>
     );
-};
-
-Cart.propTypes = {
-    totalPrice: PropTypes.number.isRequired,
 };
 
 export default Cart;
