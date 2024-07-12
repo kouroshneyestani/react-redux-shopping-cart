@@ -1,11 +1,11 @@
-// src/components/Products/Item.js
 import React from "react";
 import { useDispatch } from "react-redux";
-import { addItem } from "../../features/cart/cartSlice";
+import { addItem, toggleCart } from "../../features/cart/cartSlice";
 
 /**
  * Item component displaying product details and providing an option to add it to the cart.
  * @param {Object} props - The product properties.
+ * @param {string} props.id - The product ID.
  * @param {string} props.name - The product name.
  * @param {number} props.price - The product price.
  * @param {string} props.image - The URL of the product image.
@@ -19,6 +19,7 @@ const Item = (product) => {
     // Handler function to add a product to the cart
     const handleAddProductToCart = () => {
         dispatch(addItem({ ...product, quantity: 1 })); // Add the product to the cart with a quantity of 1
+        dispatch(toggleCart()); // Open the cart
     };
 
     return (
