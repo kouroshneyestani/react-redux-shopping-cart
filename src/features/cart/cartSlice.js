@@ -82,6 +82,10 @@ export const selectTotalPrice = (state) =>
         0
     );
 
+// Selector function to get the total quantity of items in the cart
+export const selectTotalQuantity = (state) =>
+    state.cart.items.reduce((total, item) => total + item.quantity, 0);
+
 // Selector function to check if the cart is open
 export const selectIsCartOpen = (state) => state.cart.isCartOpen;
 

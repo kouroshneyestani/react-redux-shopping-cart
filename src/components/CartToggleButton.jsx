@@ -1,6 +1,5 @@
-
-import { useDispatch } from "react-redux";
-import { toggleCart } from "../features/cart/cartSlice";
+import { useSelector, useDispatch } from "react-redux";
+import { toggleCart, selectTotalQuantity } from "../features/cart/cartSlice";
 
 /**
  * Button component to toggle the shopping cart visibility.
@@ -10,8 +9,14 @@ import { toggleCart } from "../features/cart/cartSlice";
  */
 const CartToggleButton = ({ children }) => {
     const dispatch = useDispatch();
+    const quantity = useSelector(selectTotalQuantity);
 
-    return <button onClick={() => dispatch(toggleCart())}>{children}</button>;
+    return (
+        <button onClick={() => dispatch(toggleCart())}>
+            {children}
+            {quantity > 0 && quantity}
+        </button>
+    );
 };
 
 export default CartToggleButton;
