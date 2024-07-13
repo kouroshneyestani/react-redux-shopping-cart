@@ -1,4 +1,6 @@
 import SpaceBar from "./Grid/SpaceBar";
 import Container from "./Grid/Container";
 
-export { SpaceBar, Container };
+import Breadcrumb from "./Common/Breadcrumb";
+
+export { SpaceBar, Container, Breadcrumb };
