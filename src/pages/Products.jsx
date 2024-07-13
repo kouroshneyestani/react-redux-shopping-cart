@@ -1,4 +1,3 @@
-import { withLoading } from "../hocs";
 import { useProducts } from "../hooks";
 import {
     SpaceBar,
@@ -36,4 +35,4 @@ const Products = () => {
     );
 };
 
-export default withLoading(Products);
+export default Products;
