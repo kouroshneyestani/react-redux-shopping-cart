@@ -1,34 +1,24 @@
-import React, { useEffect, useState } from "react";
+import { withLoading } from "../../hocs";
+import { useProducts } from "../../hooks";
 import ProductItem from "../ProductsItem";
-import { fetchProducts } from "../../services/productService";
+import { Container } from "../index";
 
 /**
  * Products component displaying available products.
  * @returns {JSX.Element} - The Products component.
  */
 const Products = () => {
-   
-    const [products, setProducts] = useState([]);
-
-    // Fetch products data when the component mounts
-    useEffect(() => {
-        fetchProducts().then((data) => {
-            setProducts(data); // Set the products data to state
-        });
-    }, []);
-
-    
+    const { products } = useProducts();
 
     return (
-        <div>
-            <h2>Available Products</h2>
-            <ul>
+        <Container>
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                 {products.map((product) => (
                     <ProductItem key={product.id} {...product} />
                 ))}
-            </ul>
-        </div>
+            </div>
+        </Container>
     );
 };
 
-export default Products;
+export default withLoading(Products);
