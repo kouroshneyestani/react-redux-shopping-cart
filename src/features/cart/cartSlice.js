@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 // Define the initial state of the cart with an empty array for items and isCartOpen to manage cart visibility
 const initialState = {
-    items: [], // An array to hold cart items
+    items: JSON.parse(localStorage.getItem("cartItems")) || [], // Load cart items from localStorage
     isCartOpen: false, // State to manage cart visibility
 };
 
@@ -25,6 +25,9 @@ const cartSlice = createSlice({
                 // If the item does not exist, add it to the cart
                 state.items.push({ id, quantity, name, price, image, link });
             }
+
+            // Save the cart items to localStorage
+            localStorage.setItem("cartItems", JSON.stringify(state.items));
         },
         // Action to remove an item from the cart
         removeItem: (state, action) => {
@@ -32,6 +35,9 @@ const cartSlice = createSlice({
 
             // Filter out the item with the given id
             state.items = state.items.filter((item) => item.id !== id);
+
+            // Save the cart items to localStorage
+            localStorage.setItem("cartItems", JSON.stringify(state.items));
         },
         // Action to update the quantity of an item in the cart
         updateQuantity: (state, action) => {
@@ -43,6 +49,9 @@ const cartSlice = createSlice({
             if (item) {
                 // Update the item's quantity
                 item.quantity = quantity;
+
+                // Save the cart items to localStorage
+                localStorage.setItem("cartItems", JSON.stringify(state.items));
             }
         },
         // New action to toggle the cart visibility
@@ -60,6 +69,9 @@ const cartSlice = createSlice({
         // New action to clear all items from the cart
         clearCart: (state) => {
             state.items = [];
+
+            // Clear the cart items from localStorage
+            localStorage.removeItem("cartItems");
         },
     },
 });
