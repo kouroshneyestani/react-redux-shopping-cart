@@ -10,3 +10,7 @@ export { Breadcrumb };
 // Products
 import ProductItem from "./ProductsItem";
 export { ProductItem };
+
+// Other
+import GitHubButton from "./other/GitHubButton";
+export { GitHubButton };
