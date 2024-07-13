@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { CloseIcon, CartItem } from "../index";
+import { formatPrice } from "../../utils/formatPrice";
 import {
     removeItem,
     updateQuantity,
@@ -8,7 +9,6 @@ import {
     selectIsCartOpen,
     closeCart,
 } from "../../features/cart/cartSlice";
-import { formatPrice } from "../../utils/formatPrice";
 
 const Cart = () => {
     const dispatch = useDispatch();
