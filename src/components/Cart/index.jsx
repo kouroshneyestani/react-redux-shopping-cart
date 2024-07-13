@@ -164,7 +164,7 @@ const Cart = () => {
                         <CloseIcon />
                     </button>
                 </header>
-                <article className="py-6 px-6 overflow-x-auto">
+                <article className="py-6 px-6 overflow-x-auto max-h-[calc(100vh-230px)] scrollbar-custom">
                     {cartItems.length > 0 ? (
                         <ul className="flex flex-col gap-4">
                             {filteredItems.map((item) => (

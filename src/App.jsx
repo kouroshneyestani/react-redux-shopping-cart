@@ -1,15 +1,18 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
+// Components
+import Cart from "./components/Cart";
+import Header from "./components/Header";
+
 // Pages
 import Products from "./pages/Products";
 
-// Components
-import Cart from "./components/Cart";
 
 function App() {
     return (
         <>
             <Router>
+                <Header />
                 <Routes>
                     <Route path="/products" element={<Products />} />
 
@@ -22,7 +25,6 @@ function App() {
                         }
                     />
                 </Routes>
-                
                 <Cart />
             </Router>
         </>
