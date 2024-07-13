@@ -1,14 +1,13 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
-import Products from "./components/Products";
-import ShoppingCart from "./components/Cart";
+import Products from "./pages/Products";
 
 function App() {
     return (
         <Router>
             <Routes>
                 <Route path="/products" element={<Products />} />
-                <Route path="/cart" element={<ShoppingCart />} />
+
                 <Route
                     path="*"
                     element={

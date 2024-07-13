@@ -1,7 +1,7 @@
-import { withLoading } from "../../hocs";
-import { useProducts } from "../../hooks";
-import ProductItem from "../ProductsItem";
-import { Container, Breadcrumb } from "../index";
+import { withLoading } from "../hocs";
+import { useProducts } from "../hooks";
+import ProductItem from "../components/ProductsItem";
+import { Container, Breadcrumb } from "../components/index";
 
 /**
  * Products component displaying available products.
