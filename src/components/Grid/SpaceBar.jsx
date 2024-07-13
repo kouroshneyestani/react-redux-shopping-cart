@@ -1,11 +1,11 @@
 export default function SpaceBar({ children, className, pt, pb }) {
     const classNames = [];
 
-    if (!pt) {
+    if (pt !== null) {
         classNames.push("pt-20");
     }
 
-    if (!pb) {
+    if (pb !== null) {
         classNames.push("pb-20");
     }
 

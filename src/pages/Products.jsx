@@ -19,7 +19,8 @@ const Products = () => {
     ];
 
     return (
-        <SpaceBar>
+        <>
+            <SpaceBar pb={null} />
             <Container>
                 <div className="flex items-center justify-between">
                     <Breadcrumb items={breadcrumbItems} />
@@ -30,7 +31,8 @@ const Products = () => {
                     ))}
                 </div>
             </Container>
-        </SpaceBar>
+            <SpaceBar pt={null} />
+        </>
     );
 };
 
