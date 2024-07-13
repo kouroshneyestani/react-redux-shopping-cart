@@ -1,5 +1,4 @@
-import { Container, GitHubButton } from "../index";
-import CartToggleButton from "./CartToggleButton";
+import { Container, GitHubButton, CartToggleButton } from "../index";
 
 function Header() {
     return (
