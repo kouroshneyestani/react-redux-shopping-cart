@@ -1,6 +1,11 @@
 import { withLoading } from "../hocs";
 import { useProducts } from "../hooks";
-import { Container, Breadcrumb, ProductItem } from "../components/index";
+import {
+    SpaceBar,
+    Container,
+    Breadcrumb,
+    ProductItem,
+} from "../components/index";
 
 /**
  * Products component displaying available products.
@@ -14,16 +19,18 @@ const Products = () => {
     ];
 
     return (
-        <Container>
-            <div className="flex items-center justify-between">
-                <Breadcrumb items={breadcrumbItems} />
-            </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                {products.map((product) => (
-                    <ProductItem key={product.id} {...product} />
-                ))}
-            </div>
-        </Container>
+        <SpaceBar>
+            <Container>
+                <div className="flex items-center justify-between">
+                    <Breadcrumb items={breadcrumbItems} />
+                </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                    {products.map((product) => (
+                        <ProductItem key={product.id} {...product} />
+                    ))}
+                </div>
+            </Container>
+        </SpaceBar>
     );
 };
 
