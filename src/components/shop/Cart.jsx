@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { CloseIcon, CartItem } from "../index";
 import {
@@ -16,9 +16,6 @@ const Cart = () => {
     const cartItems = useSelector((state) => state.cart.items);
     const totalPrice = useSelector(selectTotalPrice);
     const cartRef = useRef(null);
-
-    // Memoized filtered items
-    const filteredItems = useMemo(() => cartItems, [cartItems]);
 
     // Handler to remove an item
     const handleRemove = (id) => {
@@ -46,6 +43,12 @@ const Cart = () => {
         };
     }, [dispatch, isVisible]);
 
+    const cartContainerClass =
+        "w-[340px] max-w-[90%] h-screen top-0 right-0 fixed bg-white overflow-x-hidden transition-transform duration-300 ease-in-out";
+    const cartVisibilityClass = isVisible
+        ? "translate-x-0"
+        : "translate-x-full";
+
     return (
         <div
             className={`w-full h-screen fixed bg-stone-900 z-50 overflow-hidden before:top-0 before:left-0 before:bg-stone-900 before:fixed before:w-full before:h-screen before:opacity-10 text-sm ${
@@ -54,13 +57,12 @@ const Cart = () => {
         >
             <div
                 ref={cartRef}
-                className={`w-[340px] max-w-[90%] h-screen top-0 right-0 fixed bg-white overflow-x-hidden transition-transform duration-300 ease-in-out ${
-                    isVisible ? "translate-x-0" : "translate-x-full"
-                }`}
+                className={`${cartContainerClass} ${cartVisibilityClass}`}
             >
                 <header className="h-16 flex items-center justify-between px-6 bg-gray-100">
                     <span className="text-md">Shopping Bag</span>
                     <button
+                        aria-label="Close cart"
                         className="w-4 h-4 flex items-center justify-center cursor-pointer"
                         onClick={() => dispatch(closeCart())}
                     >
@@ -70,7 +72,7 @@ const Cart = () => {
                 <article className="py-6 px-6 overflow-x-auto max-h-[calc(100vh-230px)] scrollbar-custom">
                     {cartItems.length > 0 ? (
                         <ul className="flex flex-col gap-4">
-                            {filteredItems.map((item) => (
+                            {cartItems.map((item) => (
                                 <CartItem
                                     key={item.id}
                                     item={item}
