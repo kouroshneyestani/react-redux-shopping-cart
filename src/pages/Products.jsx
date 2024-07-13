@@ -14,7 +14,7 @@ const Products = () => {
     const { products } = useProducts();
     const breadcrumbItems = [
         { label: "Home", link: "/" },
-        { label: "Products", link: "/products" },
+        { label: "Products", link: "/" },
     ];
 
     return (
