@@ -1,17 +1,22 @@
-// src/App.jsx
-import React from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+
 import Products from "./components/Products";
 import ShoppingCart from "./components/Cart";
-import CartToggleButton from "./components/CartToggleButton"; // Import CartToggleButton component
 
 function App() {
     return (
-        <div>
-            <h1>React Redux Shopping Cart</h1>
-            <CartToggleButton>[ CART ]</CartToggleButton>
-            <Products />
-            <ShoppingCart />
-        </div>
+        <Router>
+            <Routes>
+                <Route path="/products" element={<Products />} />
+                <Route path="/cart" element={<ShoppingCart />} />
+                <Route
+                    path="*"
+                    element={
+                        <div className="text-center">404 - Page Not Found</div>
+                    }
+                />
+            </Routes>
+        </Router>
     );
 }
 
