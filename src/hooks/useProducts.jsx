@@ -6,7 +6,7 @@ import { fetchProducts } from "../services/productService";
  * Custom hook for fetching products.
  * @returns {Object} - An object containing products, loading state, and error.
  */
-const useProducts = () => {
+export const useProducts = () => {
     const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -28,5 +28,3 @@ const useProducts = () => {
 
     return { products, loading, error };
 };
-
-export default useProducts;
