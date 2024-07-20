@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useCallback, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { CloseIcon, CartItem } from "../index";
 import { formatPrice } from "../../utils/formatPrice";
@@ -10,6 +10,7 @@ import {
     closeCart,
 } from "../../features/cart/cartSlice";
 
+// Cart component
 const Cart = () => {
     const dispatch = useDispatch();
     const isVisible = useSelector(selectIsCartOpen);
@@ -17,15 +18,21 @@ const Cart = () => {
     const totalPrice = useSelector(selectTotalPrice);
     const cartRef = useRef(null);
 
-    // Handler to remove an item
-    const handleRemove = (id) => {
-        dispatch(removeItem({ id }));
-    };
+    // Memoized handler to remove an item
+    const handleRemove = useCallback(
+        (id) => {
+            dispatch(removeItem({ id }));
+        },
+        [dispatch]
+    );
 
-    // Handler to update quantity
-    const handleQuantityChange = (id, quantity) => {
-        dispatch(updateQuantity({ id, quantity }));
-    };
+    // Memoized handler to update quantity
+    const handleQuantityChange = useCallback(
+        (id, quantity) => {
+            dispatch(updateQuantity({ id, quantity }));
+        },
+        [dispatch]
+    );
 
     useEffect(() => {
         const handleClickOutside = (event) => {
@@ -48,13 +55,12 @@ const Cart = () => {
     const cartVisibilityClass = isVisible
         ? "translate-x-0"
         : "translate-x-full";
+    const backdropClass = `w-full h-screen fixed bg-stone-900 z-50 overflow-hidden before:top-0 before:left-0 before:bg-stone-900 before:fixed before:w-full before:h-screen before:opacity-10 text-sm ${
+        isVisible ? "opacity-100" : "opacity-0 pointer-events-none"
+    } transition-opacity duration-300 ease-in-out`;
 
     return (
-        <div
-            className={`w-full h-screen fixed bg-stone-900 z-50 overflow-hidden before:top-0 before:left-0 before:bg-stone-900 before:fixed before:w-full before:h-screen before:opacity-10 text-sm ${
-                isVisible ? "opacity-100" : "opacity-0 pointer-events-none"
-            } transition-opacity duration-300 ease-in-out`}
-        >
+        <div className={backdropClass}>
             <div
                 ref={cartRef}
                 className={`${cartContainerClass} ${cartVisibilityClass}`}

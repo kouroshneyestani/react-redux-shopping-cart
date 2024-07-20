@@ -1,4 +1,6 @@
-export default function SpaceBar({ children, className, pt, pb }) {
+import React from "react";
+
+const SpaceBar = React.memo(({ children, className, pt, pb }) => {
     const classNames = [];
 
     if (pt !== null) {
@@ -12,4 +14,6 @@ export default function SpaceBar({ children, className, pt, pb }) {
     return (
         <div className={[...classNames, className].join(" ")}>{children}</div>
     );
-}
+});
+
+export default SpaceBar;

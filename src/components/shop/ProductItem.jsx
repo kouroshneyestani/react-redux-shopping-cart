@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback } from "react";
 import { useDispatch } from "react-redux";
 import { addItem, toggleCart } from "../../features/cart/cartSlice";
 
@@ -16,11 +16,14 @@ const ProductItem = ({ id, name, price, image, link }) => {
     const dispatch = useDispatch();
 
     // Handler function to add a product to the cart
-    const handleAddProductToCart = (event) => {
-        event.preventDefault(); // Prevent default anchor behavior
-        dispatch(addItem({ id, name, price, image, quantity: 1 })); // Add the product to the cart with a quantity of 1
-        dispatch(toggleCart()); // Open the cart
-    };
+    const handleAddProductToCart = useCallback(
+        (event) => {
+            event.preventDefault(); // Prevent default anchor behavior
+            dispatch(addItem({ id, name, price, image, quantity: 1 })); // Add the product to the cart with a quantity of 1
+            dispatch(toggleCart()); // Open the cart
+        },
+        [dispatch, id, name, price, image]
+    ); // Include all dependencies
 
     return (
         <div className="group">
@@ -58,4 +61,4 @@ const ProductItem = ({ id, name, price, image, link }) => {
     );
 };
 
-export default ProductItem;
+export default React.memo(ProductItem);
