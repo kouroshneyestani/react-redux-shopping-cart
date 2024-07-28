@@ -1,12 +1,11 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 // Components
-import Cart from "./components/Cart";
+import { Cart } from "./components";
 import Header from "./components/Header";
 
 // Pages
 import Products from "./pages/Products";
-
 
 function App() {
     return (
@@ -14,7 +13,7 @@ function App() {
             <Router>
                 <Header />
                 <Routes>
-                    <Route path="/products" element={<Products />} />
+                    <Route path="/" element={<Products />} />
 
                     <Route
                         path="*"

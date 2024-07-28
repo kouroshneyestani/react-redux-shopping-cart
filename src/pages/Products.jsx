@@ -1,3 +1,4 @@
+import React, { useMemo } from "react";
 import { useProducts } from "../hooks";
 import {
     SpaceBar,
@@ -12,10 +13,21 @@ import {
  */
 const Products = () => {
     const { products } = useProducts();
-    const breadcrumbItems = [
-        { label: "Home", link: "/" },
-        { label: "Products", link: "/products" },
-    ];
+
+    const breadcrumbItems = useMemo(() => {
+        console.log("Calculating breadcrumbItems");
+        return [
+            { label: "Home", link: "/" },
+            { label: "Products", link: "/" },
+        ];
+    }, []);
+
+    const productItems = useMemo(() => {
+        console.log("Calculating productItems");
+        return products.map((product) => (
+            <ProductItem key={product.id} {...product} />
+        ));
+    }, [products]);
 
     return (
         <>
@@ -25,9 +37,7 @@ const Products = () => {
                     <Breadcrumb items={breadcrumbItems} />
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                    {products.map((product) => (
-                        <ProductItem key={product.id} {...product} />
-                    ))}
+                    {productItems}
                 </div>
             </Container>
             <SpaceBar pt={null} />

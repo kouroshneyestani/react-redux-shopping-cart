@@ -1,12 +1,4 @@
-// Grids
-import SpaceBar from "./Grid/SpaceBar";
-import Container from "./Grid/Container";
-export { SpaceBar, Container };
-
-// Common
-import Breadcrumb from "./Common/Breadcrumb";
-export { Breadcrumb };
-
-// Products
-import ProductItem from "./ProductsItem";
-export { ProductItem };
+export * from "./grid";
+export * from "./shop";
+export * from "./common";
+export * from "./other";
